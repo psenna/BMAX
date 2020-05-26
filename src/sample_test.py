@@ -61,7 +61,3 @@ class SampleTest(unittest.TestCase):
         sample.extract_sift()
         self.assertEqual(len(sample.keypoints), 6942)
         self.assertEqual(sample.descriptors[1].shape, (6942, 128))
-
-
-if __name__ == '__main__':
-    unittest.main()
