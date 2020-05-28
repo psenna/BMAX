@@ -1,0 +1,15 @@
+NAME=DEFAULT_VALUE             comment                                                                  (other possible values)
+
+#Keypoits
+
+KEYPOINT_DETECTOR_TYPE=SIFT    Keypoint detector algorithm                                              (SIFT, DENSE)
+DENSE_DETECTOR_STEP=10         Step for dense feature detector, if  KEYPOINT_DETECTOR_TYPE=DENSE        (int values)
+DESCRIPTOR_TYPE=SIFT           Keypoint descriptor algorithm                                            ()
+
+#K-means
+
+KMEANS_MAX_ITER=10             The maximum number of iterations in k means                              (int values)
+
+#
+
+FEATURE_VECTOR_TYPE=BOF        Feature vector algorithm                                                 (BOF)

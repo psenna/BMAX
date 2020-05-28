@@ -5,8 +5,11 @@ class SampleUtilsTest(unittest.TestCase):
 
     def test_split_samples_by_label(self):
         import numpy as np
+        import os
         from src.sample import Sample
         from src.sample_utils import SampleUtils
+
+        os.environ.clear()
 
         samples = []
         for i in range(12):
@@ -22,8 +25,11 @@ class SampleUtilsTest(unittest.TestCase):
 
     def test_split_training_test_data(self):
         import numpy as np
+        import os
         from src.sample import Sample
         from src.sample_utils import SampleUtils
+
+        os.environ.clear()
 
         samples = []
         for i in range(12):
@@ -42,8 +48,11 @@ class SampleUtilsTest(unittest.TestCase):
 
     def test_split_training_test_data_with_limited_test(self):
         import numpy as np
+        import os
         from src.sample import Sample
         from src.sample_utils import SampleUtils
+
+        os.environ.clear()
 
         samples = []
         for i in range(12):
@@ -54,3 +63,19 @@ class SampleUtilsTest(unittest.TestCase):
         self.assertEqual(3, len(training_data))
 
         self.assertEqual(6, len(test_data))
+
+    def test_create_vocabulary(self):
+        import cv2 as cv
+        import os
+        from src.sample import Sample
+        from src.sample_utils import SampleUtils
+
+        os.environ.clear()
+        os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
+
+        img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)
+        sample = Sample(img, 1)
+        sample2 = Sample(img, 1)
+        vocabulary = SampleUtils.create_vocabulary([sample, sample2], 10)
+
+        self.assertEqual(vocabulary.shape, (10, 128))
