@@ -3,13 +3,20 @@ import unittest
 
 class SampleUtilsTest(unittest.TestCase):
 
+    def setUp(self):
+        import os
+        self.base_env = os.environ.copy()
+
+    def tearDown(self) -> None:
+        import os
+        os.environ.clear()
+        os.environ.update(self.base_env)
+
     def test_split_samples_by_label(self):
         import numpy as np
         import os
         from src.sample import Sample
         from src.sample_utils import SampleUtils
-
-        os.environ.clear()
 
         samples = []
         for i in range(12):
@@ -28,8 +35,6 @@ class SampleUtilsTest(unittest.TestCase):
         import os
         from src.sample import Sample
         from src.sample_utils import SampleUtils
-
-        os.environ.clear()
 
         samples = []
         for i in range(12):
@@ -52,8 +57,6 @@ class SampleUtilsTest(unittest.TestCase):
         from src.sample import Sample
         from src.sample_utils import SampleUtils
 
-        os.environ.clear()
-
         samples = []
         for i in range(12):
             samples.append(Sample(np.random.rand(50, 50), str(i % 3)))
@@ -70,7 +73,6 @@ class SampleUtilsTest(unittest.TestCase):
         from src.sample import Sample
         from src.sample_utils import SampleUtils
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)

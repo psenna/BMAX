@@ -13,3 +13,4 @@ KMEANS_MAX_ITER=10             The maximum number of iterations in k means      
 #
 
 FEATURE_VECTOR_TYPE=BOF        Feature vector algorithm                                                 (BOF)
+VOCABULARY_SIZE=100

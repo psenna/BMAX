@@ -3,12 +3,20 @@ import unittest
 
 class SampleTest(unittest.TestCase):
 
+    def setUp(self):
+        import os
+        self.base_env = os.environ.copy()
+
+    def tearDown(self) -> None:
+        import os
+        os.environ.clear()
+        os.environ.update(self.base_env)
+
     def test_find_dense_keypoints(self):
         import cv2 as cv
         import os
         from src.sample import Sample
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)
@@ -21,7 +29,6 @@ class SampleTest(unittest.TestCase):
         import os
         from src.sample import Sample
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
         os.environ['DENSE_DETECTOR_STEP'] = "50"
 
@@ -35,7 +42,6 @@ class SampleTest(unittest.TestCase):
         import os
         from src.sample import Sample
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "SIFT"
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)
@@ -48,7 +54,7 @@ class SampleTest(unittest.TestCase):
         import os
         from src.sample import Sample
 
-        os.environ.clear()
+        env = os.environ
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)
         sample = Sample(img, 1)
@@ -61,7 +67,6 @@ class SampleTest(unittest.TestCase):
         import os
         from src.sample import Sample
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)
@@ -76,7 +81,6 @@ class SampleTest(unittest.TestCase):
         from src.sample import Sample
         from src.sample_utils import SampleUtils
 
-        os.environ.clear()
         os.environ['KEYPOINT_DETECTOR_TYPE'] = "DENSE"
 
         img = cv.imread('../data/gopher.jpg', cv.IMREAD_GRAYSCALE)

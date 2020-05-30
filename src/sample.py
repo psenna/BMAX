@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+import sys
 import os
 
 
@@ -70,25 +71,38 @@ class Sample:
 
         if feature_type == 'BOF':
             if (vocabulary is None or len(vocabulary) == 0) and self.feature_vector is None:
-                print("BOF need a vocabulary to be computed")
-                return None
+                sys.exit("BOF need a vocabulary to be computed")
             self.get_bof_feature_vector(vocabulary)
+
+        if feature_type == 'BMAX':
+            if (vocabulary is None or len(vocabulary) == 0) and self.feature_vector is None:
+                sys.exit("BOF need a vocabulary to be computed")
+            self.get_bmax_feature_vector(vocabulary)
 
         return self.feature_vector
 
     def get_bof_feature_vector(self, vocabulary: []):
         self.feature_vector = np.zeros(vocabulary.shape[0])
 
-        distances = self.distance(self.get_descriptors(), vocabulary)
+        bf = cv.BFMatcher()
+        matches = bf.knnMatch(self.get_descriptors(), vocabulary, k=1)
 
-        min_index = np.argmin(distances, axis=1)
-
-        for i in range(len(min_index)):
-            self.feature_vector[min_index[i]] += 1
+        for i in range(len(matches)):
+            self.feature_vector[matches[i][0].trainIdx] += 1
 
         self.feature_vector /= sum(self.feature_vector)
         return
 
-    @classmethod
-    def distance(cls, features, vocabulary):
-        return np.array([[np.linalg.norm(i - j) for j in vocabulary] for i in features])
+    def get_bmax_feature_vector(self, vocabulary: []):
+        self.feature_vector = np.zeros(vocabulary.shape[0])
+
+        bf = cv.BFMatcher()
+        matches = bf.knnMatch(vocabulary, self.get_descriptors(), k=1)
+
+        for i in range(len(matches)):
+            self.feature_vector[i] = matches[i][0].distance
+
+        # todo: Exponencial
+
+        self.feature_vector /= sum(self.feature_vector)
+        return
